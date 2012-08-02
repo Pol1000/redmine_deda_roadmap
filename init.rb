@@ -6,11 +6,7 @@ Redmine::Plugin.register :redmine_deda_roadmap do
   url ''
   author_url ''
   
-project_module :deda_roadmap do
 
-    permission :edit_deda_roadmap, {:deda_roadmap => [:edit, :update, :new, :create, :gestione, :destroy]}
-      
-  end
 
 end
 
