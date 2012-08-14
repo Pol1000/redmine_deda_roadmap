@@ -1,3 +1,5 @@
+require 'redmine'
+
 Redmine::Plugin.register :redmine_deda_roadmap do
   name 'Redmine Deda Roadmap plugin'
   author 'Paolo Boldrini'

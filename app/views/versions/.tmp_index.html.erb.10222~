@@ -55,7 +55,7 @@
                       <td class="buttons">
                       	<%if rel_issue.status && !rel_issue.status.is_closed?%>
 																		
-	                          <%= link_to_remote(image_tag('link_break.png'),  {:url => {:controller => 'deda_roadmap', :action => 'evade', :id => rel_issue.id,:project => @project}} , :title => l(:label_evasion)) %>
+	                          <%= link_to_remote(image_tag('link_break.png'),  {:url => {:controller => 'deda_roadmap', :action => 'evade', :id => rel_issue.id}} , :title => l(:label_evasion)) %>
 						<% end %>
                       </td>
                   </tr>
