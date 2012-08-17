@@ -41,22 +41,25 @@
                           <%=h rel_issue.status.name %>
                       </td>
                       <td>
+                      	<div id='div_to_submit_<%=rel_issue.id.to_s%>'>
                       	<% j = rel_issue.journals.find(:last, !:notes.nil?)
         						unless j.nil?
 								if j.notes.nil? %>
-									<p><%= text_field 'testo',relation.id.to_s %></p>
+									<p><%= text_field :testo,:name , :id => 'name' %></p>
 								<% else %>
-									<p><%= text_field 'testo',relation.id.to_s, :value=>j.notes %></p>
+									<p><%= text_field :testo,:name, :id => 'name', :value=>j.notes %></p>
+
 
 
 								<%end
 								end%>
+					</div>
                       </td>
                       <td class="buttons">
                       	<%if rel_issue.status && !rel_issue.status.is_closed?%>
                          <%= link_to_remote("Evadi",  
-						{:url => {:controller => 'deda_roadmap', :action => 'evade', :id => rel_issue.id, :project => @project}}, 
-						:with => "'testo["+relation.id.to_s+"]=' + $('contact_name').value" ,:title => l(:label_evasion)) %>
+						{:url => {:controller => 'deda_roadmap', :action => 'evade', :id => rel_issue.id, :project => @project},
+						:submit=> 'div_to_submit_'+rel_issue.id.to_s, :method=> :post}  ,:title => l(:label_evasion)) %>		
 						<% end %>
                       </td>
                   </tr>

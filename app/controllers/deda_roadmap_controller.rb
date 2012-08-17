@@ -5,13 +5,15 @@ class DedaRoadmapController < ApplicationController
   def evade
     issue= Issue.find_by_id(params[:id])
 
-    testo_nota = params[:testo]
+    testo_nota = params[:testo][:name]
+    
+    puts testo_nota 
     if !testo_nota.nil? 
       local_journal = issue.journals.find(:last)
       local_journal.update_attributes(:notes => testo_nota)
     else
       local_journal = issue.journals.find(:last)
-      local_journal.update_attributes(:notes => "issue close")
+      local_journal.update_attributes(:notes => "segnalazione chiusa")
     end
     stato = nil
       IssueStatus.find(:all).each do |status|
