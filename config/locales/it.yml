@@ -1,4 +1,5 @@
 # Italian strings go here
 it:
   label_evasion: "Evadi"
+  label_reject: "Respingi"
   related_issues: "Segnalazioni collegate"

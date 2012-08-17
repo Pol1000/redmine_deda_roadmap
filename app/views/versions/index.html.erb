@@ -59,7 +59,11 @@
                       	<%if rel_issue.status && !rel_issue.status.is_closed?%>
                          <%= link_to_remote("Evadi",  
 						{:url => {:controller => 'deda_roadmap', :action => 'evade', :id => rel_issue.id, :project => @project},
-						:submit=> 'div_to_submit_'+rel_issue.id.to_s, :method=> :post}  ,:title => l(:label_evasion)) %>		
+						:submit=> 'div_to_submit_'+rel_issue.id.to_s, :method=> :post}  ,:title => l(:label_evasion)) %>	
+						
+						  <%= link_to_remote("Respingi",  
+						{:url => {:controller => 'deda_roadmap', :action => 'respingi', :id => rel_issue.id, :project => @project},
+						:submit=> 'div_to_submit_'+rel_issue.id.to_s, :method=> :post}  ,:title => l(:label_reject)) %>		
 						<% end %>
                       </td>
                   </tr>
