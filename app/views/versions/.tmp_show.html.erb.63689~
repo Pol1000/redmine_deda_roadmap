@@ -29,8 +29,8 @@
 <h2><%= h(@version.name) %></h2>
 
 <div id="roadmap">
-	
-	
+<%= render :partial => 'versions/overview', :locals => {:version => @version} %>
+<%= render(:partial => "wiki/content", :locals => {:content => @version.wiki_page.content}) if @version.wiki_page %>
 <div id="version-summary">
 <% if @version.estimated_hours > 0 || User.current.allowed_to?(:view_time_entries, @project) %>
 <fieldset><legend><%= l(:label_time_tracking) %></legend>
@@ -53,11 +53,6 @@
 <%= render_issue_status_by(@version, params[:status_by]) if @version.fixed_issues.count > 0 %>
 </div>
 </div>
-	
-	
-	
-<%= render :partial => 'versions/overview', :locals => {:version => @version} %>
-<%= render(:partial => "wiki/content", :locals => {:content => @version.wiki_page.content}) if @version.wiki_page %>
 <div>
 <% if @issues.present? %>
 <% form_tag({}) do -%>
@@ -77,17 +72,20 @@
 		  <legend><%= l(:related_issues) %></legend>
 
 		   <% @relations = issue.relations.select {|r| r.other_issue(@issue) && r.other_issue(issue).visible? }%>
-              <table width="100%">
+              <table class="list issues">
                   <% @relations.each do |relation| %>
 				  <% rel_issue = relation.other_issue(issue)%>
-                  <tr id="relation-<%= relation.id %>">
-                      <td>                       
+                  <tr class="issue hascontextmenu" id="relation-<%= relation.id %>">
+                      <td class="checkbox">
+                          <%= check_box_tag("ids[]", rel_issue.id, false, :id => nil) %>
+                      </td>
+                      <td class="subject">                       
                           <%= link_to_issue(rel_issue, :truncate => 60) %>
                       </td>
-                      <td>
+                      <td class="status">
                           <%=h rel_issue.status.name %>
                       </td>
-                      <td width="40%">
+                      <td>
                       	<div id='div_to_submit_<%=rel_issue.id.to_s%>'>
                       		
                       	<% 	j=rel_issue.journals.find(:last)
@@ -99,9 +97,9 @@
 							end
         						unless j.nil?
 								if j.notes.nil? %>
-									<%= text_field :testo,:name , :id => 'name' %>
+									<p><%= text_field :testo,:name , :id => 'name' %></p>
 								<% else %>
-									<%= text_field :testo,:name, :id => 'name', :value=>j.notes ,:title => j.notes%>
+									<p><%= text_field :testo,:name, :id => 'name', :value=>j.notes ,:title => j.notes%></p>
 
 
 
@@ -118,12 +116,12 @@
 								end
 
 								%>
-								 <label><%= l(:field_status) %></label>
+								<p> <label><%= l(:field_status) %></label>
  									 <%= select_tag(:sel, options_from_collection_for_select(@stati_to_show,'id','name')) %>
-								
+								</p>
 					</div>
                       </td>
-                      <td>
+                      <td class="buttons">
                       	<%if rel_issue.status && !rel_issue.status.is_closed?%>
                          <%= link_to_remote("Aggiorna",  
 						{:url => {:controller => 'deda_roadmap', :action => 'evade', :id => rel_issue.id, :project => @project},
