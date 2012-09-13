@@ -17,61 +17,8 @@
         <td class="checkbox"><%= check_box_tag 'ids[]', issue.id %></td>
         <td><%= link_to_issue(issue, :project => (@project != issue.project)) %></td>
 		<td><%=issue.status%>
-		          <%= link_to_function image_tag('bullet_toggle_plus.png'), "toggle_multi_select('#{issue.id}');" %>
-
 		</td>
-		</tr>
-	  <tr>
-      <td colspan=2>
-          <div id="<%= issue.id %>" style="display:none;">
-		  <legend><%= l(:related_issues) %></legend>
-
-		   <% @relations = issue.relations.select {|r| r.other_issue(@issue) && r.other_issue(issue).visible? }%>
-              <table class="list issues">
-                  <% @relations.each do |relation| %>
-				  <% rel_issue = relation.other_issue(issue)%>
-                  <tr class="issue hascontextmenu" id="relation-<%= relation.id %>">
-                      <td class="checkbox">
-                          <%= check_box_tag("ids[]", rel_issue.id, false, :id => nil) %>
-                      </td>
-                      <td class="subject">                       
-                          <%= link_to_issue(rel_issue, :truncate => 60) %>
-                      </td>
-                      <td class="status">
-                          <%=h rel_issue.status.name %>
-                      </td>
-                      <td>
-                      	<div id='div_to_submit_<%=rel_issue.id.to_s%>'>
-                      	<% j = rel_issue.journals.find(:last, !:notes.nil?)
-        						unless j.nil?
-								if j.notes.nil? %>
-									<p><%= text_field :testo,:name , :id => 'name' %></p>
-								<% else %>
-									<p><%= text_field :testo,:name, :id => 'name', :value=>j.notes %></p>
-
-
-
-								<%end
-								end%>
-					</div>
-                      </td>
-                      <td class="buttons">
-                      	<%if rel_issue.status && !rel_issue.status.is_closed?%>
-                         <%= link_to_remote("Evadi",  
-						{:url => {:controller => 'deda_roadmap', :action => 'evade', :id => rel_issue.id, :project => @project},
-						:submit=> 'div_to_submit_'+rel_issue.id.to_s, :method=> :post}  ,:title => l(:label_evasion)) %>	
-						
-						  <%= link_to_remote("Respingi",  
-						{:url => {:controller => 'deda_roadmap', :action => 'respingi', :id => rel_issue.id, :project => @project},
-						:submit=> 'div_to_submit_'+rel_issue.id.to_s, :method=> :post}  ,:title => l(:label_reject)) %>		
-						<% end %>
-                      </td>
-                  </tr>
-                  <% end %>
-              </table>
-          </div>
-      </td>
-      </tr>
+		</tr>	 
     <%- end -%>
     </table>
     <% end %>
@@ -107,21 +54,4 @@
 
 <%= context_menu issues_context_menu_path %>
 
-<script type="text/javascript">
-	
-	function toggle_multi_select(el) 
-	{
-		divToShow = document.getElementById(el);
-		 if (divToShow.style.display=="none") 
-		 {
-  			  divToShow.style.display="inline";
- 		 } 
-		 else 
-		 {
-    		divToShow.style.display="none";
- 		 }
-  		
-	}
-	
 
-</script>
